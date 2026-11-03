@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Floor Plan Designer</title>
+  <meta name="description" content="Interactive double-storey floor plan designer for a 32 × 50 ft plot in Faisalabad, Pakistan.">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M3 21V9l9-6 9 6v12H3Zm2-2h5v-6h4v6h5v-9l-7-4.7L5 10v9Z" fill="currentColor"/></svg>
+      <div>
+        <h1>Floor Plan Designer</h1>
+        <p>32′ × 50′ plot · 1,600 sq ft · Faisalabad · Double-storey</p>
+      </div>
+    </div>
+    <div class="controls">
+      <div class="seg" id="layoutSeg" role="tablist" aria-label="Design option">
+        <button data-layout="A" class="on">Option A <span>Rectangular</span></button>
+        <button data-layout="B">Option B <span>L-shaped</span></button>
+      </div>
+      <div class="seg" id="viewSeg" role="tablist" aria-label="View">
+        <button data-view="gf" class="on">Ground</button>
+        <button data-view="ff">First</button>
+        <button data-view="both">Both</button>
+        <button data-view="3d">3D</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="workspace">
+    <aside class="panel left" aria-label="Plan settings">
+      <section>
+        <h2>Concept</h2>
+        <p id="layoutSummary" class="muted"></p>
+      </section>
+      <section>
+        <h2>Layers</h2>
+        <label class="tog"><input type="checkbox" data-layer="furniture" checked><span>Furniture &amp; fixtures</span></label>
+        <label class="tog"><input type="checkbox" data-layer="dims" checked><span>Dimension lines</span></label>
+        <label class="tog"><input type="checkbox" data-layer="walls" checked><span>Walls, doors &amp; windows</span></label>
+        <label class="tog"><input type="checkbox" data-layer="columns" checked><span>Column placeholders</span></label>
+        <label class="tog"><input type="checkbox" data-layer="labels" checked><span>Room labels</span></label>
+      </section>
+      <section>
+        <h2>Orientation</h2>
+        <label class="field">Road / front faces
+          <select id="facing">
+            <option value="S">South (north at rear)</option>
+            <option value="N">North</option>
+            <option value="E">East</option>
+            <option value="W">West</option>
+          </select>
+        </label>
+        <p id="sunNote" class="muted small"></p>
+      </section>
+      <section>
+        <h2>Export</h2>
+        <div class="btns">
+          <button class="btn" data-export="svg0">Ground floor SVG</button>
+          <button class="btn" data-export="svg1">First floor SVG</button>
+          <button class="btn" data-export="png">Complete plan PNG</button>
+          <button class="btn" data-export="pdf">PDF (both floors)</button>
+          <button class="btn primary" data-export="print">Print</button>
+        </div>
+        <p id="exportStatus" class="muted small" aria-live="polite"></p>
+      </section>
+      <section>
+        <h2>Area schedule</h2>
+        <div id="schedule"></div>
+      </section>
+    </aside>
+
+    <section class="stage" aria-label="Drawing">
+      <div class="stage-bar">
+        <div class="stage-title" id="stageTitle">Ground Floor</div>
+        <div class="zoom">
+          <button class="icon" id="zoomOut" title="Zoom out" aria-label="Zoom out">−</button>
+          <span id="zoomLabel">100%</span>
+          <button class="icon" id="zoomIn" title="Zoom in" aria-label="Zoom in">+</button>
+          <button class="btn sm" id="zoomFit">Fit</button>
+        </div>
+      </div>
+      <div class="canvas" id="canvas"></div>
+      <div class="canvas3d" id="canvas3d" hidden>
+        <canvas id="c3d" aria-label="3D massing view"></canvas>
+        <div class="c3d-bar">
+          <div class="seg small" id="c3dSeg">
+            <button data-lv="1">Ground</button>
+            <button data-lv="2" class="on">Both floors</button>
+            <button data-lv="roof">With roof</button>
+          </div>
+          <span class="muted small">Drag to rotate · scroll to zoom</span>
+        </div>
+      </div>
+      <p class="hint">Click a room to inspect and resize it · scroll to zoom · drag to pan</p>
+    </section>
+
+    <aside class="panel right" aria-label="Details">
+      <section id="roomPanel">
+        <h2>Room</h2>
+        <div id="roomInfo" class="muted">Select a room on the plan.</div>
+      </section>
+      <section>
+        <h2>Staircase</h2>
+        <div id="stairInfo"></div>
+      </section>
+      <section>
+        <h2>Validation <span id="valCounts" class="counts"></span></h2>
+        <div class="seg small" id="valFilter">
+          <button data-f="issues" class="on">Issues</button>
+          <button data-f="all">All checks</button>
+        </div>
+        <ul id="valList" class="val"></ul>
+        <p class="muted small">Planning-level checks only. This concept is not construction-ready or structurally certified.</p>
+      </section>
+    </aside>
+  </main>
+
+  <div id="printSheet" class="print-sheet" aria-hidden="true"></div>
+
+  <script src="js/core.js"></script>
+  <script src="js/layouts.js"></script>
+  <script src="js/furniture.js"></script>
+  <script src="js/validate.js"></script>
+  <script src="js/render.js"></script>
+  <script src="js/view3d.js"></script>
+  <script src="js/export.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
